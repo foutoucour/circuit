@@ -1,20 +1,15 @@
 pipeline {
-    agent any
+    agent("ruby")
 
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
+                bundle install
             }
         }
         stage('Test') {
             steps {
-                echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
+                bundle exec rake test TESTOPTS='-v'
             }
         }
     }

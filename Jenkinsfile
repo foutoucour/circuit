@@ -1,15 +1,10 @@
 pipeline {
-    agent("ruby")
+    agent("ruby2.3")
 
     stages {
         stage('Build') {
             steps {
                 bundle install
-            }
-        }
-        stage('Test') {
-            steps {
-                bundle exec rake test TESTOPTS='-v'
             }
         }
     }

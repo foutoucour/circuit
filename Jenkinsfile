@@ -6,8 +6,9 @@ pipeline {
     stages {
         stage('Set Envivonment') {
             steps {
-                sh 'gem install bundler'
+                sh 'gem install --local bundler'
             }
+
         }
         stage('Build') {
             steps {

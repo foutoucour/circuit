@@ -1,10 +1,12 @@
 pipeline {
-    agent("ruby2.3")
+    agent{
+        label "ruby2.3"
+    }
 
     stages {
         stage('Build') {
             steps {
-                bundle install
+                sh 'bundle install'
             }
         }
     }

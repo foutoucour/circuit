@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Set Envivonment') {
             steps {
-                sh 'gem install --local bundler'
+                sh "gem install --install-dir $HOME/.gems bundler"
             }
 
         }

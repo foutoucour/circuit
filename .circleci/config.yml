@@ -7,8 +7,8 @@ jobs:
     steps:
           - checkout
           - run:
-            name: Install dependencies
-            command: bundle install
+              name: Install dependencies
+              command: bundle install
           - run:
-            name: Run tests
-            command: bundle exec rake test TESTOPTS='-v'
+              name: Run tests
+              command: bundle exec rake test TESTOPTS='-v'

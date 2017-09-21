@@ -5,4 +5,4 @@ rvm:
 before_install: gem install bundler -v 1.16.0.pre.2
 
 script:
-  - bundle exec rake test TESTOPS='-v'
+  - bundle exec rake test TESTOPTS='-v'

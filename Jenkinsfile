@@ -1,6 +1,6 @@
 pipeline {
     agent{
-        image "ruby:2.3"
+        docker "ruby:2.3"
         label "docker"
     }
 

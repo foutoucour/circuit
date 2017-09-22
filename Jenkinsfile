@@ -30,8 +30,3 @@ def tasks = [:]
     tasks[version] = {job(version)}
 }
 parallel tasks
-
-//parallel(
-//        "2.3": { node("docker") { job("2.3") } },
-//        "2.4": { node("docker") { job("2.4") } }
-//)

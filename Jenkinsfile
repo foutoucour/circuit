@@ -15,9 +15,7 @@ node("docker") {
               }
 
             stage('Tests') {
-                 steps {
-                     sh "bundle exec rake test TESTOPTS='-v'"
-                 }
+                 sh "bundle exec rake test TESTOPTS='-v'"
              }
            }
 

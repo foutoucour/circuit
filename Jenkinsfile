@@ -30,6 +30,6 @@ void job(String rubyVersion) {
 //}
 
 parallel(
-        "2.3": node("docker") { job("2.3") },
-        "2.4": node("docker") { job("2.4") }
+        "2.3": { node("docker") { job("2.3") } },
+        "2.4": { node("docker") { job("2.4") } }
 )

@@ -25,7 +25,8 @@ void job(String rubyVersion) {
         step([$class: 'WsCleanup'])
     }
 }
-
+def tasks = [:]
 ["2.3", "2.4", "2.2", "2.1", "2.0"].each{ version ->
-    job(version)
+    tasks[version] = job(version)
 }
+parallel tasks

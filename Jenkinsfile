@@ -1,27 +1,31 @@
-node("docker") {
+void job(String rubyVersion) {
+    node("docker") {
 
-        stage("Main build") {
+        stage("Checkout") {
 
             checkout scm
+        }
+
+
+        docker.image("ruby:${rubyVersion}").inside {
+            stage("Install Bundler") {
+                sh "gem install bundler --no-rdoc --no-ri"
             }
 
-
-            docker.image('ruby:2.3.1').inside {
-              stage("Install Bundler") {
-                sh "gem install bundler --no-rdoc --no-ri"
-              }
-
-              stage("Use Bundler to install dependencies") {
+            stage("Use Bundler to install dependencies") {
                 sh "bundle install"
-              }
+            }
 
             stage('Tests') {
-                 sh "bundle exec rake test TESTOPTS='-v'"
-             }
-           }
-
-
+                sh "bundle exec rake test TESTOPTS='-v'"
+            }
+        }
 
         // Clean up workspace
         step([$class: 'WsCleanup'])
+    }
+}
+
+["2.3", "2.4", "2.2", "2.1", "2.0"].each{ version ->
+    job(version)
 }

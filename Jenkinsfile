@@ -1,29 +1,27 @@
 void job(String rubyVersion) {
-    node("docker") {
 
-        stage("Checkout") {
+    stage("Checkout") {
 
-            checkout scm
-        }
-
-
-        docker.image("ruby:${rubyVersion}").inside {
-            stage("Install Bundler") {
-                sh "gem install bundler --no-rdoc --no-ri"
-            }
-
-            stage("Use Bundler to install dependencies") {
-                sh "bundle install"
-            }
-
-            stage('Tests') {
-                sh "bundle exec rake test TESTOPTS='-v'"
-            }
-        }
-
-        // Clean up workspace
-        step([$class: 'WsCleanup'])
+        checkout scm
     }
+
+
+    docker.image("ruby:${rubyVersion}").inside {
+        stage("Install Bundler") {
+            sh "gem install bundler --no-rdoc --no-ri"
+        }
+
+        stage("Use Bundler to install dependencies") {
+            sh "bundle install"
+        }
+
+        stage('Tests') {
+            sh "bundle exec rake test TESTOPTS='-v'"
+        }
+    }
+
+    // Clean up workspace
+    step([$class: 'WsCleanup'])
 }
 
 //def tasks = [:]
@@ -32,6 +30,6 @@ void job(String rubyVersion) {
 //}
 
 parallel(
-    "2.3": job("2.3"),
-    "2.4": job("2.4")
+        "2.3": node("docker") { job("2.3") },
+        "2.4": node("docker") { job("2.4") }
 )

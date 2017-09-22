@@ -1,21 +1,28 @@
-pipeline {
-    agent {
-        docker {
-            image 'ruby:2.3'
-            label 'docker'
-        }
-    }
+node("docker") {
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'bundle install'
-            }
+        stage("Main build") {
+
+            checkout scm
+
+            docker.image('ruby:2.3.1').inside {
+
+              stage("Install Bundler") {
+                sh "gem install bundler --no-rdoc --no-ri"
+              }
+
+              stage("Use Bundler to install dependencies") {
+                sh "bundle install"
+              }
+
+            stage('Tests') {
+                 steps {
+                     sh "bundle exec rake test TESTOPTS='-v'"
+                 }
+             }
+           }
+
         }
-        stage('Tests') {
-            steps {
-                sh "bundle exec rake test TESTOPTS='-v'"
-            }
-        }
-    }
+
+        // Clean up workspace
+        step([$class: 'WsCleanup'])
 }

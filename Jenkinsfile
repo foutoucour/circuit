@@ -1,6 +1,7 @@
 pipeline {
     agent{
-        label "ruby2.3"
+        image "ruby:2.3"
+        label "docker"
     }
 
     stages {

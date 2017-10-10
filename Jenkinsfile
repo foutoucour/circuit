@@ -1,18 +1,32 @@
-pipeline {
-    agent{
-        label "ruby2.3"
-    }
+void job(String rubyVersion) {
+    node("docker") {
+        stage("Checkout") {
 
-    stages {
-        stage('Build') {
-            steps {
-                sh 'bundle install'
-            }
+            checkout scm
         }
-        stage('Tests') {
-            steps {
+
+
+        docker.image("ruby:${rubyVersion}").inside {
+            stage("Install Bundler") {
+                sh "gem install bundler --no-rdoc --no-ri"
+            }
+
+            stage("Use Bundler to install dependencies") {
+                sh "bundle install"
+            }
+
+            stage('Tests') {
                 sh "bundle exec rake test TESTOPTS='-v'"
             }
         }
+
+        // Clean up workspace
+        step([$class: 'WsCleanup'])
     }
 }
+
+def tasks = [:]
+["2.3", "2.4", "2.2", "2.1", "2.0"].each { version ->
+    tasks[version] = {job(version)}
+}
+parallel tasks
